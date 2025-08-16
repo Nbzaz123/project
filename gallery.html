@@ -1,196 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Romantic Night Experience</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Romantic Gift</title>
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
     body {
-      font-family: 'Georgia', serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
       overflow: hidden;
-      color: #fff;
-    }
-
-    /* Common star background */
-    body::before {
-      content: '';
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(ellipse at bottom, #0d1b2a, #000);
-      z-index: -2;
-    }
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      z-index: -1;
-    }
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.8;
-      animation: twinkle 2s infinite ease-in-out alternate;
-    }
-    @keyframes twinkle {
-      from { opacity: 0.3; }
-      to { opacity: 1; }
-    }
-
-    /* Welcome Screen */
-    #welcome {
-      position: absolute;
-      width: 100%;
-      height: 100%;
       display: flex;
-      align-items: center;
       justify-content: center;
-      flex-direction: column;
-      background: transparent;
-      z-index: 10;
-    }
-    #welcome button {
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid #fff;
-      color: #fff;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    #welcome button:hover {
-      background: rgba(255, 255, 255, 0.3);
+      align-items: center;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+      background-size: 400% 400%;
+      animation: aurora 15s ease infinite;
     }
 
-    /* Gallery Section */
-    #gallery {
-      display: none;
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+    @keyframes aurora {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .title-container {
+      position: fixed;
+      top: 40px;
+      left: 0;
+      width: 100%;
       text-align: center;
+      z-index: 1000;
+      pointer-events: none;
     }
-    .slideshow {
+    .title {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 60px;
+      color: white;
+      text-shadow: 0 0 10px rgba(0,0,0,0.3), 
+                   0 0 20px rgba(255,192,203,0.5),
+                   0 0 30px rgba(255,192,203,0.3);
+      animation: float 3s ease-in-out infinite;
       position: relative;
-      width: 70%;
-      height: 70%;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(255,255,255,0.3);
     }
-    .slideshow img {
+    .title::after {
+      content: '♥';
       position: absolute;
+      font-size: 40px;
+      color: #ff6b6b;
+      animation: heartbeat 1.5s infinite;
+      margin-left: 10px;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    .gallery-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 2000px;
+      z-index: 3;
+    }
+    .gallery {
+      position: relative;
+      width: 300px;
+      height: 400px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease-out;
+    }
+    .card {
+      position: absolute;
+      width: 300px;
+      height: 400px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 15px;
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      overflow: hidden;
+      transform-origin: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: all 0.6s ease;
+    }
+    .card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0;
-      transition: opacity 2s ease;
     }
-    .slideshow img.active {
-      opacity: 1;
+    .card.active {
+      transform: scale(1.2) translateZ(200px);
+      box-shadow: 0 20px 60px rgba(255, 192, 203, 0.6);
+      border: 3px solid rgba(255, 255, 255, 0.9);
     }
+    .number {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      color: #ff6b6b;
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* Falling Petals */
+    .petal {
+      position: fixed;
+      top: -10px;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      border-radius: 50% 50% 50% 50%;
+      opacity: 0.8;
+      transform: rotate(45deg);
+      animation: fall linear infinite;
+      z-index: 1;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Floating hearts/lanterns */
+    .heart, .lantern {
+      position: absolute;
+      font-size: 20px;
+      animation: floatUp 15s linear infinite;
+      z-index: 2;
+    }
+    .lantern {
+      color: rgba(255,223,150,0.8);
+      text-shadow: 0 0 10px orange, 0 0 20px gold;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0.7); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1.3); opacity: 0; }
+    }
+
+    /* Quotes */
     .quote {
-      margin-top: 20px;
-      font-size: 1.5rem;
-      font-style: italic;
-      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 22px;
+      color: white;
+      text-shadow: 0 0 10px rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.3);
+      padding: 10px 20px;
+      border-radius: 15px;
       opacity: 0;
-      transition: opacity 2s ease;
+      transition: opacity 2s ease-in-out;
+      z-index: 5;
     }
-    .quote.active {
+    .quote.show {
       opacity: 1;
+    }
+
+    @media (max-width:768px){
+      .title { font-size: 40px; }
+      .quote { font-size: 16px; bottom: 40px; }
+      .gallery, .card { width:240px; height:320px; }
     }
   </style>
 </head>
 <body>
-  <div class="stars" id="stars"></div>
-
-  <!-- Welcome Screen -->
-  <div id="welcome">
-    <h1>🌌 Welcome to Our Romantic Night 🌌</h1>
-    <button onclick="startExperience()">Click to Begin Experience ❤️</button>
+  <div class="title-container">
+    <h1 class="title">A Small Gift for U</h1>
   </div>
 
-  <!-- Gallery -->
-  <div id="gallery">
-    <div class="slideshow" id="slideshow">
-      <img src="pic1.jpg" class="active">
-      <img src="pic2.jpg">
-      <img src="pic3.jpg">
-      <img src="pic4.jpg">
-      <img src="pic5.jpg">
-      <img src="pic6.jpg">
-      <img src="pic7.jpg">
-      <img src="pic8.jpg">
-      <img src="pic9.jpg">
-    </div>
-    <div class="quote" id="quote">"Love is written in the stars ✨"</div>
+  <div class="gallery-container">
+    <div class="gallery"></div>
   </div>
 
-  <audio id="bg-music" src="romantic2.mp3" loop></audio>
+  <div class="quote" id="quoteBox"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="romantic2.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
-    // Add stars
-    const starContainer = document.getElementById("stars");
-    for (let i = 0; i < 100; i++) {
-      const star = document.createElement("div");
-      star.classList.add("star");
-      star.style.top = Math.random() * 100 + "%";
-      star.style.left = Math.random() * 100 + "%";
-      star.style.animationDuration = (1 + Math.random() * 2) + "s";
-      starContainer.appendChild(star);
+    // Falling petals
+    function createPetals(){
+      for(let i=0;i<25;i++){
+        const petal=document.createElement('div');
+        petal.className='petal';
+        petal.style.left=Math.random()*100+'vw';
+        petal.style.animationDuration=5+Math.random()*10+'s';
+        document.body.appendChild(petal);
+      }
     }
 
-    const quotes = [
-      "Love is written in the stars ✨",
-      "Every heartbeat whispers your name ❤️",
-      "In your eyes, I found my home 💫",
-      "Together under the same sky 🌙",
-      "My world shines brighter with you 🌟",
-      "Forever is just the beginning 💕"
+    // Floating hearts & lanterns
+    function createFloating(){
+      const symbols=['♥','❤','💕','💖','💗'];
+      for(let i=0;i<20;i++){
+        const el=document.createElement('div');
+        if(Math.random()>0.7){
+          el.className='lantern';
+          el.textContent='🏮';
+        }else{
+          el.className='heart';
+          el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+        }
+        el.style.left=Math.random()*100+'%';
+        el.style.animationDuration=10+Math.random()*15+'s';
+        el.style.fontSize=15+Math.random()*25+'px';
+        document.body.appendChild(el);
+      }
+    }
+
+    // Quotes rotation
+    const quotes=[
+      "Every memory with you is my favorite 💖",
+      "You are my today and all of my tomorrows ❤️",
+      "Life feels magical when you are around ✨",
+      "My heart beats only for you 💕",
+      "Together, forever, always 🌸"
     ];
+    let qIndex=0;
+    function showQuotes(){
+      const box=document.getElementById('quoteBox');
+      box.textContent=quotes[qIndex];
+      box.classList.add('show');
+      setTimeout(()=>box.classList.remove('show'),4000);
+      qIndex=(qIndex+1)%quotes.length;
+    }
+    setInterval(showQuotes,6000);
 
-    let currentSlide = 0;
-    let currentQuote = 0;
-    const slides = document.querySelectorAll(".slideshow img");
-    const quoteBox = document.getElementById("quote");
-
-    function startExperience() {
-      document.getElementById("welcome").style.display = "none";
-      document.getElementById("gallery").style.display = "flex";
-      document.getElementById("bg-music").play();
-      setInterval(nextSlide, 5000);
-      setInterval(nextQuote, 5000);
+    // Gallery
+    function createGallery(){
+      const gallery=document.querySelector('.gallery');
+      const totalCards=10;
+      const radius=window.innerWidth<768?400:600;
+      let currentAngle=0;
+      const imageUrls=[
+        'pic1.jpg','pic2.jpg','pic3.jpg','pic4.jpg','pic5.jpg',
+        'pic6.jpg','pic7.jpg','pic8.jpg','pic9.jpg','pic10.jpg'
+      ];
+      for(let i=0;i<totalCards;i++){
+        const card=document.createElement('div');
+        card.className='card';
+        card.innerHTML=`
+          <img src="${imageUrls[i]}" alt="Memories ${i+1}" loading="lazy">
+          <div class="number">${i+1}</div>
+        `;
+        gallery.appendChild(card);
+      }
+      function updateCards(){
+        const cards=document.querySelectorAll('.card');
+        cards.forEach((card,index)=>{
+          const angle=(currentAngle+(index*(360/totalCards)))*(Math.PI/180);
+          const x=Math.sin(angle)*radius;
+          const z=Math.cos(angle)*radius;
+          const rotateY=angle*(180/Math.PI);
+          card.style.transform=`translate3d(${x}px,0,${z}px) rotateY(${rotateY}deg)`;
+          const normAngle=((currentAngle+(index*(360/totalCards)))%360+360)%360;
+          if(normAngle>350||normAngle<10) card.classList.add('active');
+          else card.classList.remove('active');
+        });
+      }
+      setInterval(()=>{ currentAngle+=0.3; updateCards(); },100);
+      updateCards();
     }
 
-    function nextSlide() {
-      slides[currentSlide].classList.remove("active");
-      currentSlide = (currentSlide + 1) % slides.length;
-      slides[currentSlide].classList.add("active");
+    // Music start on click/tap
+    let musicStarted=false;
+    function startMusic(){
+      if(musicStarted) return;
+      const bgMusic=document.getElementById("bgMusic");
+      if(bgMusic){
+        bgMusic.volume=0.5;
+        bgMusic.play().then(()=>{
+          musicStarted=true;
+        }).catch(()=>{});
+      }
     }
+    document.body.addEventListener("click", startMusic, { once: true });
+    document.body.addEventListener("touchstart", startMusic, { once: true });
 
-    function nextQuote() {
-      quoteBox.classList.remove("active");
-      setTimeout(() => {
-        currentQuote = (currentQuote + 1) % quotes.length;
-        quoteBox.innerText = quotes[currentQuote];
-        quoteBox.classList.add("active");
-      }, 1000);
-    }
-
-    // Initialize first quote visible
-    setTimeout(() => quoteBox.classList.add("active"), 1000);
+    // Initialize
+    document.addEventListener('DOMContentLoaded',()=>{
+      createPetals();
+      createFloating();
+      createGallery();
+      showQuotes();
+    });
   </script>
 </body>
 </html>
