@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Romantic Night Experience</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Georgia', serif;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* Common star background */
+    body::before {
+      content: '';
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at bottom, #0d1b2a, #000);
+      z-index: -2;
+    }
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: -1;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite ease-in-out alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    /* Welcome Screen */
+    #welcome {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: transparent;
+      z-index: 10;
+    }
+    #welcome button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #fff;
+      color: #fff;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #welcome button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Gallery Section */
+    #gallery {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    .slideshow {
+      position: relative;
+      width: 70%;
+      height: 70%;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(255,255,255,0.3);
+    }
+    .slideshow img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+    .slideshow img.active {
+      opacity: 1;
+    }
+    .quote {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      font-style: italic;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+    .quote.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+
+  <!-- Welcome Screen -->
+  <div id="welcome">
+    <h1>🌌 Welcome to Our Romantic Night 🌌</h1>
+    <button onclick="startExperience()">Click to Begin Experience ❤️</button>
+  </div>
+
+  <!-- Gallery -->
+  <div id="gallery">
+    <div class="slideshow" id="slideshow">
+      <img src="pic1.jpg" class="active">
+      <img src="pic2.jpg">
+      <img src="pic3.jpg">
+      <img src="pic4.jpg">
+      <img src="pic5.jpg">
+      <img src="pic6.jpg">
+      <img src="pic7.jpg">
+      <img src="pic8.jpg">
+      <img src="pic9.jpg">
+    </div>
+    <div class="quote" id="quote">"Love is written in the stars ✨"</div>
+  </div>
+
+  <audio id="bg-music" src="romantic2.mp3" loop></audio>
+
+  <script>
+    // Add stars
+    const starContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = Math.random() * 100 + "%";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.animationDuration = (1 + Math.random() * 2) + "s";
+      starContainer.appendChild(star);
+    }
+
+    const quotes = [
+      "Love is written in the stars ✨",
+      "Every heartbeat whispers your name ❤️",
+      "In your eyes, I found my home 💫",
+      "Together under the same sky 🌙",
+      "My world shines brighter with you 🌟",
+      "Forever is just the beginning 💕"
+    ];
+
+    let currentSlide = 0;
+    let currentQuote = 0;
+    const slides = document.querySelectorAll(".slideshow img");
+    const quoteBox = document.getElementById("quote");
+
+    function startExperience() {
+      document.getElementById("welcome").style.display = "none";
+      document.getElementById("gallery").style.display = "flex";
+      document.getElementById("bg-music").play();
+      setInterval(nextSlide, 5000);
+      setInterval(nextQuote, 5000);
+    }
+
+    function nextSlide() {
+      slides[currentSlide].classList.remove("active");
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add("active");
+    }
+
+    function nextQuote() {
+      quoteBox.classList.remove("active");
+      setTimeout(() => {
+        currentQuote = (currentQuote + 1) % quotes.length;
+        quoteBox.innerText = quotes[currentQuote];
+        quoteBox.classList.add("active");
+      }, 1000);
+    }
+
+    // Initialize first quote visible
+    setTimeout(() => quoteBox.classList.add("active"), 1000);
+  </script>
+</body>
+</html>
